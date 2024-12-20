@@ -4,8 +4,8 @@ This repository contains all the projects done under Infosys speringboard Intern
 ## Internship Structure
 
 ### Milestone 1
-The project is organized into the following structured folders:
-
+Tack done during Milestone 1:
+#### Creating Dataset
 - `artifiacts/`: Contains datasets used in the project and Contains the machine learning models, including base and derived classes.
 - `src/`: Contains scripts for running experiments, training models, and evaluating performance.
 
