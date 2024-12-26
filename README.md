@@ -6,3 +6,4 @@ This repository contains all the projects done under Infosys speringboard Intern
 ### Milestone 1
 Tack done during Milestone 1:
 #### 1. Creating Dataset
+The dataset "Sentiment.csv" is created using two sources and 
