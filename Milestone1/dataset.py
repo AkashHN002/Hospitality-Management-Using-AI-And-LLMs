@@ -1,5 +1,6 @@
 import pandas as pd
 import random
+import datetime
 
 name_data = pd.read_csv(r"D:\Dataset\customers-100000.csv")
 feedback_data =  pd.read_parquet(r"D:\Dataset\\train-00000-of-00001-0e99e58b23dccc25.parquet")
@@ -21,7 +22,7 @@ data = {
     "Cust_name":name_data['First Name'].iloc[:10000],
     'Cust_email':[i.lower()+str(random.randint(1000,9000))+'@example.com' for i in name_data['First Name'].iloc[:10000]],
     'Feedback':feedback_data['text'].iloc[:10000],
-    'Date':feedback_data['event_timestamp'].iloc[:10000],
+    'Date':[datetime.date(random.randint(2000, 2025),random.randint(1,12), random.randint(1,28)) for _ in range(10000)],
     'Care_Taker':name_data['Last Name'].iloc[:10000],
     'Emp_id':['EMP'+str(random.randint(1000,3000)) for _ in range(10000)],
     'Age':[random.randint(20,90) for _ in range(10000)],
@@ -38,7 +39,8 @@ data = {
     'Pricing':[random.choice(pricing_patterns) for _ in range(10000)]
 }
 df = pd.DataFrame(data)
-df.to_csv('Sentiment_data.csv')
+df.to_csv('Sentiment_data.csv', index = False)
+print('Data Saved Successfully')
 
 
 
