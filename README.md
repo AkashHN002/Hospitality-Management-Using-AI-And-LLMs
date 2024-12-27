@@ -29,10 +29,13 @@ Exicute the dataset.py to create dataset for sentiment analysis:
 python src/dataset.py
 ```
 
+
 ### Milestone 2
 
-Implimenting Sentiment analysis ingine
+Implimenting Sentiment analysis ingine.
+
 The sentiment analysys model is deployed using streamlit, UI includes a textbox to enter the feed back and a submit button to get the sentiment and suggestions
+
 Exicute the following command to run the model
 
 ```
