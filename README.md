@@ -4,7 +4,7 @@ This repository contains all the projects done under Infosys speringboard Intern
 
 ## Internship Structure
 
-
+<br>
 ## Milestone 1
 
 Task done during Milestone 1:
@@ -20,8 +20,8 @@ Task done during Milestone 1:
     ```
     python -m venv myenv
     ```
-
-2. Creating mock CRM data for Sentiment Analysis
+    <br>
+2. Creating mock CRM data for Sentiment Analysis:
     The dataset "Sentiment.csv" is created using two sources and randomly chosing values to create remaining columns
   
     Sources used:
