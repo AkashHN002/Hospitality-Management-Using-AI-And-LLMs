@@ -20,8 +20,6 @@ Task done during Milestone 1:
     conda create -p myenv python==3.12-y
     connda activate myenv
     ```
-    <br>
-    
    B. Using pyhton
     ```
     python -m venv myenv
