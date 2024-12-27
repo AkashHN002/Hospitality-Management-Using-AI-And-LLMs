@@ -34,7 +34,7 @@ Task done during Milestone 1:
     ```
 
 ---
-
+<br>
 
 ## Milestone 2
 
