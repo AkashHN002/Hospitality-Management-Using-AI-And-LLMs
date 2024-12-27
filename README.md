@@ -4,7 +4,7 @@ This repository contains all the projects done under Infosys speringboard Intern
 
 ## Internship Structure
 
-### Milestone 1
+## Milestone 1
 
 Task done during Milestone 1:
 1. Successful settup of the project environment environment:
@@ -29,10 +29,7 @@ Exicute the dataset.py to create dataset for sentiment analysis:
 python src/dataset.py
 ```
 
----
-
-
-### Milestone 2
+## Milestone 2
 
 Implimenting Sentiment analysis ingine.
 
