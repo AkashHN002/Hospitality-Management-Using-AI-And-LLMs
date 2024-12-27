@@ -7,6 +7,7 @@ This repository contains all the projects done under Infosys speringboard Intern
 - Staff notification system integrated with Slack & Email: Automated alerts sent regarding potential service issue or personilzation opportunities.
 
 <br>
+
 ## Milestone 1
 
 Task done during Milestone 1:
