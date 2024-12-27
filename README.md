@@ -1,8 +1,10 @@
 # Infosys Springboard Internship 5.0 - AI And LLMs
 
-This repository contains all the projects done under Infosys speringboard Internship showcasing the implimentation of LLM. It includes-
-- Creating mock CRM dataset for sentiment analysis
-- Using API for impliment LLM locally , Implimentation of sentiment analysis ingine: to generate real-time alerts and suggestion based on detected changes in guest sentiment, Personalised recommondation system, Dynamic profile management system: successfully updates based on real-time behaviour analysis and Staff notification system integrated with Slack & Email: Automated alerts sent regarding potential service issue or personilzation opportunities.
+This repository contains all the projects done under Infosys speringboard Internship showcasing the implimentation of LLM. Tasks includes-
+- Creating mock CRM dataset for sentiment analysis and Using API for impliment LLM locally.
+- Implimentation of sentiment analysis ingine: to generate real-time alerts and suggestion based on detected changes in guest sentiment.
+- Personalised recommondation system and Dynamic profile management system: successfully updates based on real-time behaviour analysis.
+- Staff notification system integrated with Slack & Email: Automated alerts sent regarding potential service issue or personilzation opportunities.
 
 ## Internship Structure
 
