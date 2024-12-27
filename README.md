@@ -18,21 +18,15 @@ Task done during Milestone 1:
    A. Using conda
     ```
     conda create -p myenv python==3.12-y
-    ```
-    To activate myenv
-    ```
     connda activate myenv
     ```
+    <br>
     
    B. Using pyhton
     ```
     python -m venv myenv
-    ```
-    To activate myenv
-    ```
     myenv\Scripts\activate
     ```
-       
     <br>
 
     After activating python 3.12 environment execute requirement.txt to install required libraries
