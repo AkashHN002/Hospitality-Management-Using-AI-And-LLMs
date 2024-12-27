@@ -18,10 +18,32 @@ Task done during Milestone 1:
     ```
     conda create -p myenv python==3.12-y
     ```
+    To activate myenv
+    ```
+    connda activate myenv
+    ```
+    To deactivate
+    ```
+    conda deactivate
+    ```
     
     B. Using pyhton
     ```
     python -m venv myenv
+    ```
+    To activate myenv
+    ```
+    myenv\Scripts\activate
+    ```
+    To deactivate
+    ```
+    deactivate
+    ```
+    <br>
+
+    After activating python 3.12 environment execute requirement.txt to install required libraries
+    ```
+    pip install -r requirements.txt
     ```
     <br>
 2. Creating mock CRM data for Sentiment Analysis:
