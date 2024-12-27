@@ -12,9 +12,10 @@ This repository contains all the projects done under Infosys speringboard Intern
 
 Task done during Milestone 1:
 1. Successful settup of the project environment environment:
-    Crteating vertual python environment "myenv" by running the following code:
-    
-   A. Using conda
+   
+Crteating vertual python environment "myenv" by running the following code:
+
+A. Using conda
     ```
     conda create -p myenv python==3.12-y
     ```
@@ -23,7 +24,7 @@ Task done during Milestone 1:
     connda activate myenv
     ```
     
-   B. Using pyhton
+B. Using pyhton
     ```
     python -m venv myenv
     ```
