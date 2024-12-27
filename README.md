@@ -7,7 +7,7 @@ This repository contains all the projects done under Infosys speringboard Intern
 ### Milestone 1
 
 Task done during Milestone 1:
-1. Settup an environment:
+1. Successful settup of the project environment environment:
   Crteating vertual python environment "myenv" by running the following code:
   A. Using conda
   ```
@@ -17,18 +17,24 @@ Task done during Milestone 1:
   ```
     python -m venv myenv
 ```
-2  . Creating Dataset
+2  . Creating mock CRM data for Sentiment Analysis
   The dataset "Sentiment.csv" is created using two sources and randomly chosing values to create remaining columns
 
   Sources used:
   - `For Feedbacks:`  https://huggingface.co/datasets/argilla/tripadvisor-hotel-reviews?row=62&library=datasets .
   - `For names and emails:`  https://www.datablist.com/learn/csv/download-sample-csv-files?form=MG0AV3 .
 
-Exicute the dataset.py to create Sentiment dataset:
+Exicute the dataset.py to create dataset for sentiment analysis:
 ```
-python dataset.csv
+python src/dataset.py
 ```
 
 ### Milestone 2
 
+Implimenting Sentiment analysis ingine
+The sentiment analysys model is deployed using streamlit, UI includes a textbox to enter the feed back and a submit button to get the sentiment and suggestions
+Exicute the following command to run the model
 
+```
+streamlit run src\Sentiment_model.py
+```
