@@ -15,30 +15,23 @@ Task done during Milestone 1:
     Crteating vertual python environment "myenv" by running the following code:
     
     A. Using conda
-        ```
-        conda create -p myenv python==3.12-y
-        ```
-        To activate myenv
-        ```
-        connda activate myenv
-        ```
-        To deactivate
-        ```
-        conda deactivate
-        ```
+    ```
+    conda create -p myenv python==3.12-y
+    ```
+    To activate myenv
+    ```
+    connda activate myenv
+    ```
     
     B. Using pyhton
-        ```
-        python -m venv myenv
-        ```
-        To activate myenv
-        ```
-        myenv\Scripts\activate
-        ```
-        To deactivate
-        ```
-        deactivate
-        ```
+    ```
+    python -m venv myenv
+    ```
+    To activate myenv
+    ```
+    myenv\Scripts\activate
+    ```
+       
     <br>
 
     After activating python 3.12 environment execute requirement.txt to install required libraries
