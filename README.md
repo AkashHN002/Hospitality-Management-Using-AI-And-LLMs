@@ -43,8 +43,6 @@ Task done during Milestone 1:
     ```
     python src/dataset.py
     ```
-
----
 <br>
 
 ## Milestone 2
