@@ -45,11 +45,13 @@ def getRecommendations(user_id, matrix, similar_user_indices, k = 3):
     return recommonded_activity.index.tolist()
 
 
-st.title("Sentiment analysis")
+st.title("Recommendation ")
 user_id = st.text_input("""### Enter the User Id""",None)
 b = st.button("Submit")
+
 s = False
 if user_id:
+    
     similar_users = getSimilarUser(user_id, matrix)
     
     if b:

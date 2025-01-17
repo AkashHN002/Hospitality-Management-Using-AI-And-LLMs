@@ -12,7 +12,7 @@ activities = {
 def getUserData(data):
     user_data = []
     for id in data.User_Id:
-        for i in range(random.randint(10,20)):
+        for i in range(random.randint(5,15)):
             category = random.choice(list(activities.keys()))
             activity = random.choice(activities[category])
             rating = random.randint(1, 5)
@@ -28,5 +28,5 @@ def getUserData(data):
     return pd.DataFrame(user_data)
 
 user = getUserData(data)
-user.to_csv(r"Notebook/Interaction.csv")
+user.to_csv(r"Notebook/Interaction.csv", index = False)
 print("Recommendation data saved Successfully")
