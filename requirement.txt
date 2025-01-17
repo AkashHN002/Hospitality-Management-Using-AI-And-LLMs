@@ -4,3 +4,4 @@ seaborn
 numpy
 streamlit 
 groq
+MySQLdb
