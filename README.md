@@ -60,7 +60,7 @@ streamlit run src\Sentiment_model.py
 
 ## Milestone 3
 
-1. Implimenting Recommondation system.
+1. Implimenting Personalised Recommondation system.
 
 To build a recommondation system , first we have to load the interaction.csv, which has all the data regarding users interaction
 Execute the following command to load interaction data
