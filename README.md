@@ -56,3 +56,28 @@ Exicute the following command to run the model
 ```
 streamlit run src\Sentiment_model.py
 ```
+<br>
+
+## Milestone 3
+
+1. Implimenting Recommondation system.
+
+To build a recommondation system , first we have to load the interaction.csv, which has all the data regarding users interaction
+Execute the following command to load interaction data
+```
+python src/Load_recommendation_data.py
+```
+
+Recommondation system UI includes a text box which accepts the User ID and gives the recommooondation based on similar user by implimenting Cosine similarity.
+Execute the following command to run the recommondation system
+```
+streamlit run src/Recommendation.py
+```
+
+2. Dynamic Profile Management
+
+This is a CLI that takes the user ID, asks for the required information, and then updates the existing data in the database if the user's data is already present. Otherwise, it collects the necessary data and inserts the user information into the database.
+Execute the following command for Dynamic profile management
+```
+python src/Profile.py
+```
