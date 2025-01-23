@@ -81,3 +81,13 @@ Execute the following command for Dynamic profile management
 ```
 python src/Profile.py
 ```
+<br>
+
+## Milestone 4
+
+Staff notification system integrated with Slack & Email. The notificcations based on feedback are sent to the staff via slack and the recommendations are sent to the user via the email. 
+
+Execute the following command to send alerts to staff
+```
+streamlit run src/Alert.py
+```
