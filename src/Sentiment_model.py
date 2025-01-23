@@ -1,17 +1,18 @@
 import streamlit as st
-import os
+import requests
 import json
-from groq import Groq
-
-
-client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-)
-
 
 def Sentiment_provider(text):
-    chat_completion = client.chat.completions.create(
-        messages=[
+    response = requests.post(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": "Bearer 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",
+            "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+            "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+        },
+        data=json.dumps({
+            "model": "openai/gpt-3.5-turbo", # Optional
+            "messages": [
             {
                 "role":"system",
                 "content":"You are a sentiment analysist who outputs the sentiment and the departments/areas mentioned in review in JSON."
@@ -21,31 +22,40 @@ def Sentiment_provider(text):
                 "role": "user",
                 "content": f"Provide the Sentiment of {text}",
             }
-        ],
-        model="llama3-8b-8192",
-        response_format={"type": "json_object"}
-    )
+            ]
+            
+        })
+        )
 
-    return json.loads((chat_completion.choices[0].message.content))
+    return json.loads(response.json()['choices'][0]['message']['content'])
 
 
 def Suggestion_provider(Sentiment_dict:dict, text):
-    chat_completion = client.chat.completions.create(
-    messages=[
-        {
-            "role":"system",
-            "content":f"You are a suggestion provider who gives suggestion imporve areas mentioned by the help of review text and return area name and suggestion in JSON.\n"
-            f"The JSON object must use the schema : {json.dumps({'Area':'Suggestion'})}"
+    
+    response = requests.post(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": "Bearer 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",
+            "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+            "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
         },
-        {
-            "role": "user",
-            "content": f"Provide the Suggestion  to improve areas :{Sentiment_dict['Areas']} by analysing {text}",
-        }
-    ],
-    model="llama3-8b-8192",
-    response_format={"type": "json_object"}
+        data=json.dumps({
+            "model": "openai/gpt-3.5-turbo", # Optional
+            "messages":[
+                {
+                    "role":"system",
+                    "content":f"You are a suggestion provider who gives suggestion imporve areas mentioned by the help of review text and return area name and suggestion in JSON.\n"
+                    f"The JSON object must use the schema : {json.dumps({'Area':'Suggestion'})}"
+                },
+                {
+                    "role": "user",
+                    "content": f"Provide the Suggestion  to improve areas :{Sentiment_dict['Areas']} by analysing {text}",
+                }
+            ],
+            
+        })
     )
-    return json.loads(chat_completion.choices[0].message.content)
+    return json.loads(response.json()['choices'][0]['message']['content'])
 
 
 st.title("Sentiment analysis")
