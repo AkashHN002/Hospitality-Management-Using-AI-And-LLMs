@@ -1,4 +1,4 @@
-# Infosys Springboard Internship 5.0 - AI And LLMs
+# Hospitality MAnagement Using AI And LLMs
 
 This repository contains all the projects done under Infosys speringboard Internship showcasing the implimentation of LLM. Tasks includes-
 - Creating mock CRM dataset for sentiment analysis and Using API for impliment LLM locally.
