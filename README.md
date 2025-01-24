@@ -76,7 +76,7 @@ streamlit run src/Recommendation.py
 
 2. Dynamic Profile Management
 
-Dynamic Profile Management typically involves the real-time creation, modification, and management of user profiles within a system. This is a CLI that takes the user ID, asks for the required information, and then updates the existing data in the database if the user's data is already present. Otherwise, it collects the necessary data and inserts the user information into the database.
+Dynamic Profile Management involves the real-time creation, modification, and management of user profiles within a system. The user interface facilitates this by allowing users to enter their User ID, request required information which helps to efficiently manage the database.
 Execute the following command for Dynamic profile management
 ```
 python src/Profile.py
