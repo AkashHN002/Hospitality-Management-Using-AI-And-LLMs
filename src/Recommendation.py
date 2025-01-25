@@ -9,20 +9,14 @@ time_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Time
 matrix = ( rating_matrix * 0.7) + (time_matrix * 0.3)
 
 def getSimilarUser(user_id, matrix, k = 3):
-    # Getting data of user
     user_data = matrix[matrix.index == user_id]
-
-    # Getting data of other users
     other_user = matrix[matrix.index != user_id]
-
-    # Calculating the similarity between one user and every other user
     similar_matrix = cosine_similarity(user_data, other_user)[0].tolist()
 
 
     user_indices = dict(zip(other_user.index, similar_matrix))
     similar_user = sorted(user_indices.items(), key = lambda x: x[1], reverse = True)
 
-    # Selecting top K users
     top_similar_user = similar_user[:k]
     users = [u[0] for u in top_similar_user]
     return users
@@ -56,5 +50,6 @@ if user_id:
     
     if b:
        recommendations = getRecommendations(user_id, matrix, similar_users)
+       st.write(f"Recommondations for {user_id}: ")
        for area in recommendations:
            st.write(area)

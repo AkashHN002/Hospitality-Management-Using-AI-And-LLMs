@@ -22,14 +22,13 @@ submit = st.button('Submit')
 exist = cursor.execute("SELECT * FROM interaction WHERE User_id = %s", (user_id,))
 if user_id:
     if exist:
-        for i, act in enumerate(activities.keys()):
-            st.write(f"{i+1} --> {act}")
+        st.write(' '.join([f"{i+1}.{act.upper()}." for i,act in enumerate(activities.keys())]))
+
         c = st.text_input("Choose the Category visited: ")
         if c:
             c = int(c)
             cat = list(activities.keys())[c-1]
-            for i in range(len(activities[cat])):
-                st.write(f"{i+1}--> {activities[cat][i]} ")
+            st.write(''.join([f"{i+1}.{activities[cat][i]}." for i in  range(len(activities[cat]))]))
             
             n = st.text_input(f"""Choose any Preferances:  """)
             if n:
@@ -43,18 +42,17 @@ if user_id:
                     if cursor.rowcount:
                         db.commit()
                         st.write("Data Updated")
-                        st.write(f"Choosed Category {cat}\nChoosed Activity {pref}")
+                        st.write(f"Choosed Category {cat}")
+                        st.write(f"Choosed Activity {pref}")
 
     else:
         st.write("Data Not Found\nPlease give the following details: ")
-        for i, act in enumerate(activities.keys()):
-            st.write(f"{i+1} --> {act}")
+        st.write(' '.join([f"{i+1}.{act.upper()}." for i,act in enumerate(activities.keys())]))
         c = st.text_input("Choose the Category visited: ")
         if c:
             c = int(c)
             cat = list(activities.keys())[c-1]
-            for i in range(len(activities[cat])):
-                st.write(f"{i+1}--> {activities[cat][i]} ")
+            st.write('\t'.join([f"{i+1}. {activities[cat][i]}. " for i in  range(len(activities[cat]))]))
             
             n = st.text_input(f"""Choose any Preferances:  """)
             if n:

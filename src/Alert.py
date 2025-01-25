@@ -4,23 +4,15 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 import streamlit as st
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
-data = pd.read_csv(r"Notebook/Interaction.csv")
-rating_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Rating").fillna(0)
-time_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Time_Spent").fillna(0)
-matrix = ( rating_matrix * 0.7) + (time_matrix * 0.3)
-
-webhook_url = "https://hooks.slack.com/services/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"
-# webhook_url = "https://hooks.slack.com/services/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"
+from email.message import EmailMessage
+import ssl
 
 
 def Sentiment_provider(text):
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",
+            "Authorization": f"Bearer {api}",
         },
 
         data=json.dumps({
@@ -46,7 +38,7 @@ def Sentiment_provider(text):
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",
+            "Authorization": f"Bearer {api}",
         },
 
         data=json.dumps({
@@ -98,110 +90,120 @@ def getRecommendations(user_id, matrix, k = 3):
     return recommonded_activity.index.tolist()
 
 def send_email(sender_email, sender_password, receiver_email, subject, body):
-    msg = MIMEMultipart()
+    
+    msg = EmailMessage()
     msg['From'] = sender_email
     msg['To'] = receiver_email
     msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+
+    msg.set_content(body)
+
+    context = ssl.create_default_context()
 
     try:
-        
-        server = smtplib.SMTP('smtp.mailtrap.io', 2525)  
-        server.starttls()  
-        server.login(sender_email, sender_password)  
-        server.send_message(msg)
-        print("Email sent successfully")
-
-    except Exception as e:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as sm:
+            sm.login(sender_email, sender_password)
+            sm.sendmail(sender_email, receiver_email, msg.as_string())
+            print("Email sent successfully")
+    except smtplib.SMTPException as e:
         print(f"Failed to send email: {e}")
         
 
-activities = {
-        'amenities': ['pool', 'spa', 'gym', 'tennis_court', 'business_center'],
-        'dining': ['main_restaurant', 'cafe', 'bar', 'room_service', 'buffet'],
-        'activities': ['city_tour', 'beach_activity', 'cooking_class', 'yoga', 'golf']
-}
-
-details = {}
-user_id = st.text_input("Enter User ID")
-text = st.text_input("Provide us a feedback")
-sub = st.button("Submit")
-if sub:
-    st.write(f"Hello {user_id}")
-
-    sender_email = "f99464769a8706"
-    sender_password = "c09e4af96bb041"
-    receiver_email = "akashhn06@gmail.com"
-    subject = "Test Email"
-
-    recommendations = getRecommendations(user_id, matrix)
-    # formated_recs = "You may also like :\n" + "\n".join(recommendations["Recommondations"])
-
-    response = requests.post(
-    url="https://openrouter.ai/api/v1/chat/completions",
-    headers={
-        "Authorization": "Bearer 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",
-    },
-
-    data=json.dumps({
-        "model": "openai/gpt-3.5-turbo",
-        "messages":[
-            {
-                "role":"system",
-                                "content":f"You are a recommondation provider who suggest user to visit the areas mentioned as an advertisement"
-
-            },
-            {
-                "role": "user",
-                "content": f"Recommend {recommendations} to user"
-            }
-        ],
-    })
-    )
-    body = response.json()['choices'][0]['message']['content']
-
-    send_email(sender_email, sender_password, receiver_email, subject, body)
 
 
-    output, sentiment = Sentiment_provider(text)
+if __name__ == '__main__':
+    api = "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"
+    webhook_url = "https://hooks.slack.com/services/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"
+    # webhook_url = "https://hooks.slack.com/services/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" # test slack  bot
 
-    formatted_data = "\n".join([f"*{key.upper()}*: {value}" for key, value in output.items()])
-    slack_data = {
-        'text':f'*USER ID*: {user_id}\n\n*SENTIMENT*: {sentiment}\n\n*FEEDBACK*: {text}\n\n*SUGGESTION*: \n\n{formatted_data}'
-        }
-    response = requests.post(
-        webhook_url, data=json.dumps(slack_data),
-        headers={'Content-Type': 'application/json'}
-    )
-    if response.status_code != 200:
-        raise ValueError(
-            f'Request to Slack returned an error {response.status_code}, the response is:\n{response.text}'
+
+    activities = {
+            'amenities': ['pool', 'spa', 'gym', 'tennis_court', 'business_center'],
+            'dining': ['main_restaurant', 'cafe', 'bar', 'room_service', 'buffet'],
+            'activities': ['city_tour', 'beach_activity', 'cooking_class', 'yoga', 'golf']
+    }
+
+    data = pd.read_csv(r"Notebook/Interaction.csv")
+    rating_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Rating").fillna(0)
+    time_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Time_Spent").fillna(0)
+    matrix = ( rating_matrix * 0.7) + (time_matrix * 0.3)
+
+    st.title("Staff Alerting System")
+    user_id = st.text_input("Enter User ID")
+    text = st.text_input("Provide us a feedback")
+    sub = st.button("Submit")
+    if sub:
+        st.write(f"Hello {user_id}")
+
+        sender_email = "akashhntest@gmail.com"
+        sender_password = "vizj akfu qhol mggj"
+        receiver_email = "akashhn06@gmail.com"
+        subject = "Test Email"
+
+        recommendations = getRecommendations(user_id, matrix)
+
+        response = requests.post(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {api}"
+        },
+
+        data=json.dumps({
+            "model": "openai/gpt-3.5-turbo",
+            "messages":[
+                {
+                    "role":"system",
+                    "content":f"You are a recommondation provider who suggest user to visit the areas mentioned as an advertisement"
+
+                },
+                {
+                    "role": "user",
+                    "content": f"Recommend {recommendations} to user"
+                }
+            ],
+        })
         )
-    else:
-        print('Alerts sent successfully.')
 
-    
-    response = requests.post(
-    url="https://openrouter.ai/api/v1/chat/completions",
-    headers={
-        "Authorization": "Bearer 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",
-    },
+        body = response.json()['choices'][0]['message']['content']
+        send_email(sender_email, sender_password, receiver_email, subject, body)
 
-    data=json.dumps({
-        "model": "openai/gpt-3.5-turbo",
-        "messages":[
-            {
-                "role":"system",
-                "content":f"You are a resturant manager who gives response for the user who entered the feedback based on the sentiment of the feedback"
-            },
-            {
-                "role": "user",
-                "content": f"Give response to {text}"
+
+        output, sentiment = Sentiment_provider(text)
+
+        formatted_data = "\n".join([f"*{key.upper()}*: {value}" for key, value in output.items()])
+        slack_data = {
+            'text':f'*USER ID*: {user_id}\n\n*SENTIMENT*: {sentiment}\n\n*FEEDBACK*: {text}\n\n*SUGGESTION*: \n\n{formatted_data}'
             }
-        ],
-    })
-    )
-    st.write(response.json()['choices'][0]['message']['content'])
-    
+        response = requests.post(
+            webhook_url, data=json.dumps(slack_data),
+            headers={'Content-Type': 'application/json'}
+        )
+        if response.status_code != 200:
+            raise ValueError(
+                f'Request to Slack returned an error {response.status_code}, the response is:\n{response.text}'
+            )
+        else:
+            print('Alerts sent successfully.')
 
-    
+        
+        response = requests.post(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {api}"
+        },
+
+        data=json.dumps({
+            "model": "openai/gpt-3.5-turbo",
+            "messages":[
+                {
+                    "role":"system",
+                    "content":f"You are a resturant manager who gives response for the user who entered the feedback based on the sentiment of the feedback"
+                },
+                {
+                    "role": "user",
+                    "content": f"Give response to {text}"
+                }
+            ],
+        })
+        )
+        st.write(response.json()['choices'][0]['message']['content'])

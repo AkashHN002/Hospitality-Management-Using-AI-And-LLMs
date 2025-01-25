@@ -1,17 +1,15 @@
 import streamlit as st
 import requests
 import json
-
+api = "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"
 def Sentiment_provider(text):
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",
-            "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-            "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+            "Authorization": f"Bearer {api}",
         },
         data=json.dumps({
-            "model": "openai/gpt-3.5-turbo", # Optional
+            "model": "openai/gpt-3.5-turbo",
             "messages": [
             {
                 "role":"system",
@@ -35,12 +33,10 @@ def Suggestion_provider(Sentiment_dict:dict, text):
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",
-            "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-            "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+            "Authorization": f"Bearer {api}"
         },
         data=json.dumps({
-            "model": "openai/gpt-3.5-turbo", # Optional
+            "model": "openai/gpt-3.5-turbo",
             "messages":[
                 {
                     "role":"system",
