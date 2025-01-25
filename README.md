@@ -87,6 +87,11 @@ python src/Profile.py
 
 Staff notification system integrated with Slack & Email. The notificcations based on feedback are sent to the staff via slack and the recommendations are sent to the user via the email. 
 
+Execute the following command to send alerts to staff
+```
+streamlit run src/Alert.py
+```
+<br>
 
 ## Collecting evrything
 
@@ -94,9 +99,4 @@ All the work done in the above Milestones are combined to one webpage. Make sure
 Execute the following command to run the Hospitality management webpage. 
 ```
 streamlit run Hospitality_Management.py
-```
-
-Execute the following command to send alerts to staff
-```
-streamlit run src/Alert.py
 ```
