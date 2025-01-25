@@ -90,7 +90,7 @@ Staff notification system integrated with Slack & Email. The notificcations base
 
 ## Collecting evrything
 
-All the work done in the above Milestones are combined to one webpage.Make sure that API key is correct, Datasets are created, Versions are matching, Database has the required tables, slack bot is initialised to the required channel and requirements for sending emails are complete.
+All the work done in the above Milestones are combined to one webpage. Make sure that API key is correct, Datasets are created, Versions are matching, Database has the required tables, slack bot is initialised to the required channel and requirements for sending emails are complete.
 Execute the following command to run the Hospitality management webpage. 
 ```
 streamlit run Hospitality_Management.py
