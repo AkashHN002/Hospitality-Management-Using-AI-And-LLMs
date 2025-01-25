@@ -62,25 +62,25 @@ streamlit run src\Sentiment_model.py
 
 1. Implimenting Personalised Recommondation system.
 
-To build a recommondation system , first we have to load the interaction.csv, which has all the data regarding users interaction
-Execute the following command to load interaction data
-```
-python src/Load_recommendation_data.py
-```
+   To build a recommondation system , first we have to load the interaction.csv, which has all the data regarding users interaction
+   Execute the following command to load interaction data
+   ```
+   python src/Load_recommendation_data.py
+   ```
 
-Recommondation system UI includes a text box which accepts the User ID and gives the recommooondation based on similar user by implimenting Cosine similarity.
-Execute the following command to run the recommondation system
-```
-streamlit run src/Recommendation.py
-```
+   Recommondation system UI includes a text box which accepts the User ID and gives the recommooondation based on similar user by implimenting Cosine similarity.
+   Execute the following command to run the recommondation system
+   ```
+   streamlit run src/Recommendation.py
+   ```
 
 2. Dynamic Profile Management
 
-Dynamic Profile Management involves the real-time creation, modification, and management of user profiles within a system. The user interface facilitates this by allowing users to enter their User ID, request required information which helps to efficiently manage the database.
-Execute the following command for Dynamic profile management
-```
-python src/Profile.py
-```
+   Dynamic Profile Management involves the real-time creation, modification, and management of user profiles within a system. The user interface facilitates this by allowing users to enter their User ID, request required information which helps to efficiently manage       the database.
+   Execute the following command for Dynamic profile management
+   ```
+   python src/Profile.py
+   ```
 <br>
 
 ## Milestone 4
