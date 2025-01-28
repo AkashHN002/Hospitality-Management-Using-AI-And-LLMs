@@ -1,7 +1,10 @@
 import streamlit as st
 import requests
 import json
-api = "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"
+import os
+api = "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"
+
+
 def Sentiment_provider(text):
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
@@ -60,6 +63,7 @@ b = st.button("Submit")
 
 if text:
     sentimen_dict = Sentiment_provider(text)
+    print(sentimen_dict)
     if b:
 
         if sentimen_dict['Sentiment'] != "Positive":

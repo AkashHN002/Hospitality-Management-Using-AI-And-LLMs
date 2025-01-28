@@ -1,6 +1,7 @@
 import MySQLdb
 import random
 import streamlit as st
+import time
 
 db = MySQLdb.connect(
     host = 'localhost',
@@ -38,12 +39,15 @@ if user_id:
                 time_spent = random.randint(30, 180)
                 if rating:
                     rating = int(rating)
+                    time1 = time.time()
                     cursor.execute("INSERT INTO interaction VALUES(%s, %s, %s, %s, %s)", (user_id, cat, pref, rating, time_spent))
                     if cursor.rowcount:
                         db.commit()
+                        time2 = time.time()
                         st.write("Data Updated")
                         st.write(f"Choosed Category {cat}")
                         st.write(f"Choosed Activity {pref}")
+                        print("Time taken: ",time2 - time1)
 
     else:
         st.write("Data Not Found\nPlease give the following details: ")

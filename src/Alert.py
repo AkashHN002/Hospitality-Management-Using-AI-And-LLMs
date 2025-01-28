@@ -6,7 +6,8 @@ import streamlit as st
 import smtplib
 from email.message import EmailMessage
 import ssl
-
+import os
+import time
 
 def Sentiment_provider(text):
     response = requests.post(
@@ -112,9 +113,9 @@ def send_email(sender_email, sender_password, receiver_email, subject, body):
 
 
 if __name__ == '__main__':
-    api = "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"
-    webhook_url = "https://hooks.slack.com/services/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"
-    # webhook_url = "https://hooks.slack.com/services/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" # test slack  bot
+    api = os.getenv('OPEN_ROUTER_API')
+    webhook_url = "https://hooks.slack.com/services/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"
+    # webhook_url = "https://hooks.slack.com/services/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" # test slack  bot
 
 
     activities = {
@@ -164,25 +165,26 @@ if __name__ == '__main__':
         })
         )
 
-        body = response.json()['choices'][0]['message']['content']
-        send_email(sender_email, sender_password, receiver_email, subject, body)
-
-
+        time1 = time.time()
         output, sentiment = Sentiment_provider(text)
 
         formatted_data = "\n".join([f"*{key.upper()}*: {value}" for key, value in output.items()])
+        body = f"*USER ID*: {user_id}\n\n*SENTIMENT*: {sentiment}\n\n*FEEDBACK*: {text}\n\n*SUGGESTION*: \n\n{formatted_data}\n\n*RECOMMENDATION*: {response.json()['choices'][0]['message']['content']}"
+        send_email(sender_email, sender_password, receiver_email, subject, body)
         slack_data = {
-            'text':f'*USER ID*: {user_id}\n\n*SENTIMENT*: {sentiment}\n\n*FEEDBACK*: {text}\n\n*SUGGESTION*: \n\n{formatted_data}'
+            'text':body
             }
         response = requests.post(
             webhook_url, data=json.dumps(slack_data),
             headers={'Content-Type': 'application/json'}
         )
+        time2 = time.time()
         if response.status_code != 200:
             raise ValueError(
                 f'Request to Slack returned an error {response.status_code}, the response is:\n{response.text}'
             )
         else:
+            print("Timee taken: ", time2 - time1)
             print('Alerts sent successfully.')
 
         
