@@ -1,4 +1,4 @@
-# Hospitality Management Using AI And LLMs
+# AI-Driven Guest Experience Personalization System for Hospitality
 
 This repository contains all the projects done under Infosys speringboard Internship showcasing the implimentation of LLM. Tasks includes-
 - Creating mock CRM dataset for sentiment analysis and Using API for impliment LLM locally.
