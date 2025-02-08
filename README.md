@@ -16,6 +16,7 @@ Crteate vertual python environment "myenv" by running the following code:
     connda activate myenv
     ```
    B. Using pyhton
+   
     ```
     python -m venv myenv
     myenv\Scripts\activate
@@ -23,6 +24,7 @@ Crteate vertual python environment "myenv" by running the following code:
     <br>
     
 After activating python 3.12 environment, execute requirement.txt to install required libraries.
+
     ```
     pip install -r requirements.txt
     ```
