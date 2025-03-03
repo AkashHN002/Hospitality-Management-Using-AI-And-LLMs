@@ -112,100 +112,99 @@ def send_email(sender_email, sender_password, receiver_email, subject, body):
 
 
 
-if __name__ == '__main__':
-    api = os.getenv('OPEN_ROUTER_API')
-    webhook_url = "https://hooks.slack.com/services/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"
-    # webhook_url = "https://hooks.slack.com/services/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" # test slack  bot
+api = os.getenv('OPEN_ROUTER_API')
+webhook_url = "web hook"
+# webhook_url = "test web hook" # test slack  bot
 
 
-    activities = {
-            'amenities': ['pool', 'spa', 'gym', 'tennis_court', 'business_center'],
-            'dining': ['main_restaurant', 'cafe', 'bar', 'room_service', 'buffet'],
-            'activities': ['city_tour', 'beach_activity', 'cooking_class', 'yoga', 'golf']
-    }
+activities = {
+        'amenities': ['pool', 'spa', 'gym', 'tennis_court', 'business_center'],
+        'dining': ['main_restaurant', 'cafe', 'bar', 'room_service', 'buffet'],
+        'activities': ['city_tour', 'beach_activity', 'cooking_class', 'yoga', 'golf']
+}
 
-    data = pd.read_csv(r"Notebook/Interaction.csv")
-    rating_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Rating").fillna(0)
-    time_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Time_Spent").fillna(0)
-    matrix = ( rating_matrix * 0.7) + (time_matrix * 0.3)
+data = pd.read_csv(r"Notebook/Interaction.csv")
+rating_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Rating").fillna(0)
+time_matrix = data.pivot_table(index='User_ID', columns="Activity", values="Time_Spent").fillna(0)
+matrix = ( rating_matrix * 0.7) + (time_matrix * 0.3)
 
-    st.title("Staff Alerting System")
-    user_id = st.text_input("Enter User ID")
-    text = st.text_input("Provide us a feedback")
-    sub = st.button("Submit")
-    if sub:
-        st.write(f"Hello {user_id}")
+st.title("Staff Alerting System")
+user_id = st.text_input("Enter User ID")
+text = st.text_input("Provide us a feedback")
+sub = st.button("Submit")
+if sub:
+    st.write(f"Hello {user_id}")
 
-        sender_email = "akashhntest@gmail.com"
-        sender_password = "vizj akfu qhol mggj"
-        receiver_email = "akashhn06@gmail.com"
-        subject = "Test Email"
+    sender_email = "akashhntest@gmail.com"
+    sender_password = "vizj akfu qhol mggj"
+    receiver_email = "akashhn06@gmail.com"
+    subject = "Test Email"
 
-        recommendations = getRecommendations(user_id, matrix)
+    recommendations = getRecommendations(user_id, matrix)
 
-        response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {api}"
-        },
+    response = requests.post(
+    url="https://openrouter.ai/api/v1/chat/completions",
+    headers={
+        "Authorization": f"Bearer {api}"
+    },
 
-        data=json.dumps({
-            "model": "openai/gpt-3.5-turbo",
-            "messages":[
-                {
-                    "role":"system",
-                    "content":f"You are a recommondation provider who suggest user to visit the areas mentioned as an advertisement"
+    data=json.dumps({
+        "model": "openai/gpt-3.5-turbo",
+        "messages":[
+            {
+                "role":"system",
+                "content":f"You are a recommondation provider who suggest user to visit the areas mentioned as an advertisement"
 
-                },
-                {
-                    "role": "user",
-                    "content": f"Recommend {recommendations} to user"
-                }
-            ],
-        })
-        )
-
-        time1 = time.time()
-        output, sentiment = Sentiment_provider(text)
-
-        formatted_data = "\n".join([f"*{key.upper()}*: {value}" for key, value in output.items()])
-        body = f"*USER ID*: {user_id}\n\n*SENTIMENT*: {sentiment}\n\n*FEEDBACK*: {text}\n\n*SUGGESTION*: \n\n{formatted_data}\n\n*RECOMMENDATION*: {response.json()['choices'][0]['message']['content']}"
-        send_email(sender_email, sender_password, receiver_email, subject, body)
-        slack_data = {
-            'text':body
+            },
+            {
+                "role": "user",
+                "content": f"Recommend {recommendations} to user"
             }
-        response = requests.post(
-            webhook_url, data=json.dumps(slack_data),
-            headers={'Content-Type': 'application/json'}
-        )
-        time2 = time.time()
-        if response.status_code != 200:
-            raise ValueError(
-                f'Request to Slack returned an error {response.status_code}, the response is:\n{response.text}'
-            )
-        else:
-            print("Timee taken: ", time2 - time1)
-            print('Alerts sent successfully.')
+        ],
+    })
+    )
 
-        
-        response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {api}"
-        },
+    time1 = time.time()
+    output, sentiment = Sentiment_provider(text)
 
-        data=json.dumps({
-            "model": "openai/gpt-3.5-turbo",
-            "messages":[
-                {
-                    "role":"system",
-                    "content":f"You are a resturant manager who gives response for the user who entered the feedback based on the sentiment of the feedback"
-                },
-                {
-                    "role": "user",
-                    "content": f"Give response to {text}"
-                }
-            ],
-        })
+    formatted_data = "\n".join([f"*{key.upper()}*: {value}" for key, value in output.items()])
+    body = f"*USER ID*: {user_id}\n\n*SENTIMENT*: {sentiment}\n\n*FEEDBACK*: {text}\n\n*SUGGESTION*: \n\n{formatted_data}\n\n*RECOMMENDATION*: {response.json()['choices'][0]['message']['content']}"
+    send_email(sender_email, sender_password, receiver_email, subject, body)
+    slack_data = {
+        'text':body
+        }
+    response = requests.post(
+        webhook_url, data=json.dumps(slack_data),
+        headers={'Content-Type': 'application/json'}
+    )
+    time2 = time.time()
+    if response.status_code != 200:
+        raise ValueError(
+            f'Request to Slack returned an error {response.status_code}, the response is:\n{response.text}'
         )
-        st.write(response.json()['choices'][0]['message']['content'])
+    else:
+        print("Timee taken: ", time2 - time1)
+        print('Alerts sent successfully.')
+
+    
+    response = requests.post(
+    url="https://openrouter.ai/api/v1/chat/completions",
+    headers={
+        "Authorization": f"Bearer {api}"
+    },
+
+    data=json.dumps({
+        "model": "openai/gpt-3.5-turbo",
+        "messages":[
+            {
+                "role":"system",
+                "content":f"You are a resturant manager who gives response for the user who entered the feedback based on the sentiment of the feedback"
+            },
+            {
+                "role": "user",
+                "content": f"Give response to {text}"
+            }
+        ],
+    })
+    )
+    st.write(response.json()['choices'][0]['message']['content'])

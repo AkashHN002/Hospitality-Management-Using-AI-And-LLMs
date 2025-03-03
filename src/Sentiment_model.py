@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import json
 import os
-api = "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"
+api = "api_key"
 
 
 def Sentiment_provider(text):
