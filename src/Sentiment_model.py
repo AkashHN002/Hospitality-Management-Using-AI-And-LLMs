@@ -3,11 +3,11 @@ import requests
 import json
 import os
 api = "api_key"
-
+url = "url"
 
 def Sentiment_provider(text):
     response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
+        url=url,
         headers={
             "Authorization": f"Bearer {api}",
         },
@@ -34,7 +34,7 @@ def Sentiment_provider(text):
 def Suggestion_provider(Sentiment_dict:dict, text):
     
     response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
+        url=url,
         headers={
             "Authorization": f"Bearer {api}"
         },

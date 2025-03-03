@@ -9,9 +9,10 @@ import ssl
 import os
 import time
 
+url = "url"
 def Sentiment_provider(text):
     response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
+        url=url,
         headers={
             "Authorization": f"Bearer {api}",
         },
@@ -37,7 +38,7 @@ def Sentiment_provider(text):
     Sentiment_dict =  json.loads(response.json()['choices'][0]['message']['content'])
     
     response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
+        url=url,
         headers={
             "Authorization": f"Bearer {api}",
         },
@@ -143,7 +144,7 @@ if sub:
     recommendations = getRecommendations(user_id, matrix)
 
     response = requests.post(
-    url="https://openrouter.ai/api/v1/chat/completions",
+    url=url,
     headers={
         "Authorization": f"Bearer {api}"
     },
@@ -188,7 +189,7 @@ if sub:
 
     
     response = requests.post(
-    url="https://openrouter.ai/api/v1/chat/completions",
+    url=url,
     headers={
         "Authorization": f"Bearer {api}"
     },
