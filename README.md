@@ -11,7 +11,7 @@ This repository contains all the projects done under Infosys speringboard Intern
 Crteate vertual python environment "myenv" by running the following code:
 A. Using conda
  ```
- conda create -p myenv python==3.12-y
+ conda create --name myenv python=3.12 -y
  connda activate myenv
  ```
    B. Using pyhton
