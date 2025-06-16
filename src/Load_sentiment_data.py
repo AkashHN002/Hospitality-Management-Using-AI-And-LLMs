@@ -6,8 +6,8 @@ name_data = pd.read_csv(r"Notebook\Sorces\customers-100000.csv")
 feedback_data =  pd.read_parquet(r"Notebook\Sorces\train-00000-of-00001-0e99e58b23dccc25.parquet")
 
 
-dept = ['Accounting', 'Advertising', 'Banking', 'Customer Service', 'E-commerce', 'Entertainment', 'Food', 'Gym', 'Healthcare' 'Help Desk',
- 'Hospitality', 'Housekeeping', 'Laundry', 'Maintenance', 'Photography', 'Dining', 'Reception', 'Spa']
+dept = ['Accounting', 'Advertising', 'Customer Service', 'Entertainment', 'Food', 'Gym', 'Healthcare' 'Help Desk',
+        'Housekeeping', 'Laundry', 'Maintenance', 'Photography', 'Dining', 'Reception', 'Spa']
 
 wellness_activities = [ "Spa Treatment","Massage Therapy","Yoga Sessions","Meditation Classes","Facials","Sauna","Steam Room","Body Scrubs",
     "Herbal Baths", "Fitness Classes", "Beauty Treatments", "Personal Training", "Herbal Therapy", "Skin Care Treatments",]
