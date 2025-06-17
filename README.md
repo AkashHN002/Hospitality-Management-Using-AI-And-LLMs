@@ -6,8 +6,7 @@ This repository contains all the projects done under Infosys speringboard Intern
 - Personalised recommondation system and Dynamic profile management system: successfully updates based on real-time behaviour analysis.
 - Staff notification system integrated with Slack & Email: Automated alerts sent regarding potential service issue or personilzation opportunities.
 
-![diagram-export-6-17-2025-10_35_15-PM](https://github.com/user-attachments/assets/336b21ec-f4e9-47c5-b958-5adf62f30b0a)
-
+![diagram-export-6-17-2025-10_35_15-PM](https://github.com/user-attachments/assets/5b812545-389c-478e-891c-e5a1cc5e95db)
 
 <br>
 
