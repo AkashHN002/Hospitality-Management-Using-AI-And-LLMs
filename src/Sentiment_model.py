@@ -5,40 +5,42 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai 
 
-load_dotenv()
+def model():
+    load_dotenv()
 
-genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
- 
-gemini_model = genai.GenerativeModel('gemini-2.0-flash')
+    genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
+    
+    gemini_model = genai.GenerativeModel('gemini-2.0-flash')
 
-gemini_model.temperature = 0.4
+    gemini_model.temperature = 0.4
+
+    return gemini_model
 
 
-def get_gemini_response(user_prompt):
+def get_gemini_response(gemini_model, user_prompt):
     response = gemini_model.generate_content(user_prompt)
     return response.text
 
-
-api = "api_key"
-url = "url"
+llm = model()
 
 def Sentiment_provider(text):
-    response = get_gemini_response(f"""Provide the Sentiment and all departments/areas which are related to hotel mentioned in given text.
-    Text = {text}.
-    Return the response in JSON format with the structrue:
-    *  include key `Sentiment` with value as 'Positive' or 'Negative'.
-    *  include key `Areas` with value as a list of departments/areas mentioned in the text.""")
+    prompt = f"""Provide the Sentiment and all departments/areas which are related to hotel mentioned in given text.
+Text = {text}.
+Return the response in JSON format with the structrue:
+*  include key `Sentiment` with value as 'Positive' or 'Negative'.
+*  include key `Areas` with value as a list of departments/areas mentioned in the text."""
+    response = get_gemini_response(llm, prompt)
     print(response)
 
     return json.loads(response.split('```')[-2].replace('json',""))
 
 
 def Suggestion_provider(Sentiment_dict:dict, text):
+    prompt =f"""Provide the Suggestion to improve areas :{Sentiment_dict['Areas']}, by analysing review: {text}
+Return the response in JSON format with the structrue:
+*  include the `Areas` as keys and Suggestion as values."""
     
-    response = get_gemini_response(
-        f"Provide the Suggestion to improve areas :{Sentiment_dict['Areas']}, by analysing review: {text}"
-        f"""Return the response in JSON format with the structrue:
-            *  include the `Areas` as keys and Suggestion as values.""")
+    response = get_gemini_response(llm, prompt)
     
 
     return json.loads(response.split('```')[-2].replace('json',""))
