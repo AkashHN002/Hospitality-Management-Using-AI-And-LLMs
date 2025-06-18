@@ -9,8 +9,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-st.set_page_config( page_title="Staff Alerting System",)
-
 # st.markdown("""
 #     <style>
 #     .main {
@@ -182,9 +180,16 @@ st.markdown("""
 
 st.title("Staff Alerting System")
 
-# User interface accepts User Id and the Feedback
-user_id = st.text_input("Enter User ID")
-text = st.text_area("Provide us a feedback")
+user_id = st.text_input(
+    "User ID", 
+    placeholder="Enter user identification number",
+    help="Unique identifier for the user providing feedback"
+)
+text = st.text_area(
+    "Feedback Details", 
+    placeholder="Please share your experience with us in detail...",
+    help="Provide comprehensive feedback about your experience"
+)
 
 
 response_prompt = f"""You are a resturant manager who gives response for the user who entered the feedback based on the sentiment of the feedback.
