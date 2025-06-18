@@ -94,7 +94,7 @@ Return the response in JSON format with the structrue:
 
     subject = "Recommendation"
 
-    formated_recs = "Here are some personalized recommendation for you:\n"+"\n".join([f"*{key.upper()}*: {value}" for key, value in recommendations.items()])
+    formated_recs = "Recommended Activities for you based on your interaction:\n"+"\n".join([f"*{key.upper()}*: {value}" for key, value in recommendations.items()])
     send_email(sender_email, sender_password, receiver_email, subject, formated_recs)
     print("Recommendation Email sent successfully.")
 
