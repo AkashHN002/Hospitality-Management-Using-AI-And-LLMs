@@ -111,21 +111,22 @@ st.markdown("""
     .stButton > button {
         background: linear-gradient(45deg, #3498db, #2980b9);
         color: white;
-        border: none;
-        border-radius: 25px;
         padding: 0.75rem 2rem;
         font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+
     }
     
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-    }
-    
+    .response-card{
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin: 0.5rem 0;
+        border: 1px solid #e1e8ed;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+            
     .recommendation-card {
         background: #ffffff;
         border: 1px solid #ecf0f1;
@@ -204,13 +205,16 @@ llm = model()
 
 if sub:
     # Response to user feedback
-    # response = get_gemini_response(llm, response_prompt)
-    # print(response_prompt)
-    # st.write(response)
+    response = get_gemini_response(llm, response_prompt)
+    print(response_prompt)
 
-    st.markdown("<div class='response-section'>", unsafe_allow_html=True)
     st.markdown("<div class='section-header'>💬 Management Response</div>", unsafe_allow_html=True)
-    st.write(response)
+    st.markdown(f"""
+            <div class="response-card">
+                <p style="color: #2c3e50; margin-bottom: 1rem;">{response}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
     st.markdown("</div>", unsafe_allow_html=True)
     
     sender_email = "akashhntest@gmail.com"
@@ -231,7 +235,6 @@ Return the response in JSON format with the structrue:
     rec_response = get_gemini_response(llm, prompt)
 
     # Providing recommendation
-    st.write("Here are some recommendations You may like")
     recommendations = json.loads(rec_response.split('```')[-2].replace("json",""))
 
     # container = st.container()
@@ -239,14 +242,18 @@ Return the response in JSON format with the structrue:
     #     for area, value in recommendations.items():
     #         with container.expander(area.replace("_"," ").upper(), expanded=True):
     #             st.write(value)
-    st.markdown("<div class='section-header'>🌟 Personalized Recommendations</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-header'>🌟 Activites you may also like</div>", unsafe_allow_html=True)
+    container = st.container()
     for i, (area, value) in enumerate(recommendations.items()):
-        with st.expander(f"🎯 {area.replace('_',' ').title()}", expanded=True):
-            st.markdown(f"""
-            <div class='recommendation-card'>
-                <p style='margin: 0; font-size: 1.1rem; line-height: 1.6;'>{value}</p>
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown(f"""
+        <hr style='border: none; border-top: 1px solid #ccc; margin: 1rem 0;'/>
+        <h4>{area.replace('_',' ').title()} </h4>
+        <div class='recommendation-card'>
+            <p style='margin: 0; font-size: 1.1rem; line-height: 1.6;'>{value}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if i == len(recommendations.values()) - 1:
+            st.markdown("<hr style='border: none; border-top: 1px solid #ccc; margin: 1rem 0;'/>", unsafe_allow_html=True)
             
     time1 = time.time()
     # Analysing the sentiment  of the feedback and the areas mentioned by the user in feedback
@@ -275,9 +282,9 @@ Return the response in JSON format with the structrue:
     send_email(sender_email, sender_password, receiver_email, subject, body)
     print("Aletr Email sent successfully.")
 
-    subject = "Recommendation"
+    subject = "Recommended Activities for you based on your interaction"
     # Sending Recommendation
-    formated_recs = "Recommended Activities for you based on your interaction:\n"+"\n".join([f"*{key.upper()}*: {value}" for key, value in recommendations.items()])
+    formated_recs = "Activites recommended just for you:\n"+"\n".join([f"{key.upper()}: \n{value}" for key, value in recommendations.items()])
     send_email(sender_email, sender_password, receiver_email, subject, formated_recs)
     print("Recommendation Email sent successfully.")
 
