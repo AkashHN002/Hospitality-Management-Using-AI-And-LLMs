@@ -29,8 +29,10 @@ st.markdown("""
 
 st.title("Staff Alerting System")
 
+# User interface accepts User Id and the Feedback
 user_id = st.text_input("Enter User ID")
 text = st.text_area("Provide us a feedback")
+
 
 response_prompt = f"""You are a resturant manager who gives response for the user who entered the feedback based on the sentiment of the feedback.
 User has given given the following feedback, Feedback = {text}.\n Plese provide a response.
@@ -41,6 +43,7 @@ sub = st.button("Submit")
 llm = model()
 
 if sub:
+    # Response to user feedback
     response = get_gemini_response(llm, response_prompt)
     print(response_prompt)
     st.write(response)
@@ -48,10 +51,12 @@ if sub:
     sender_email = "akashhntest@gmail.com"
     sender_password = os.getenv('SENDER_PASS')
     receiver_email = "akashhn06@gmail.com"
-    
+
+    # Generating Recommendation for the user_id
     recommendations = Recommendation()
     recommendations = recommendations.getRecommendations(user_id, 4)
 
+    # improving the recommendation
     prompt = f"""You are a recommendation engine suggest users to visit the given areas of hotel like advertising it.
 Recommend areas: {recommendations}, to user"
 Example: {json.dumps({'Swimming pool': 'You must visit our Swimming Pool, it is the best in the city!'})}
@@ -59,7 +64,8 @@ Return the response in JSON format with the structrue:
 *  include the ares as keys and recommendation as values."""
     
     rec_response = get_gemini_response(llm, prompt)
-    
+
+    # Providing recommendation
     st.write("Here are some recommendations You may like")
     recommendations = json.loads(rec_response.split('```')[-2].replace("json",""))
 
@@ -70,22 +76,26 @@ Return the response in JSON format with the structrue:
                 st.write(value)
                 
     time1 = time.time()
+    # Analysing the sentiment  of the feedback and the areas mentioned by the user in feedback
     sentiment_data = Sentiment_provider(text)
     suggestions = None
     formatted_data = None
 
     if sentiment_data['Sentiment'] == "Negative":
+        # Getting suggestion for the areas by the help of feedback
         suggestions = Suggestion_provider(sentiment_data, text)
-    
-        formatted_data = "\n".join([f"*{key.upper()}*: {value}" for key, value in suggestions.items()])
 
+        
+        formatted_data = "\n".join([f"*{key.upper()}*: {value}" for key, value in suggestions.items()])
+    # Preparing the mail for alert
     body = (
         f"USER ID: {user_id}\n\n"
         f"SENTIMENT: {'⚠️ '+ sentiment_data['Sentiment'] if sentiment_data['Sentiment'].lower() == 'negative' else sentiment_data['Sentiment'] }\n\n"
         f"FEEDBACK: {text}\n\n"
         f"SUGGESTION: \n\n{formatted_data if formatted_data is not None else 'No Suggestions'}"
     )
-    
+
+    # sending Alert
     send_alert(body)
     print("Alert sent to Slack channel.")
     subject = "Alert for User Feedback"
@@ -93,7 +103,7 @@ Return the response in JSON format with the structrue:
     print("Aletr Email sent successfully.")
 
     subject = "Recommendation"
-
+    # Sending Recommendation
     formated_recs = "Recommended Activities for you based on your interaction:\n"+"\n".join([f"*{key.upper()}*: {value}" for key, value in recommendations.items()])
     send_email(sender_email, sender_password, receiver_email, subject, formated_recs)
     print("Recommendation Email sent successfully.")
