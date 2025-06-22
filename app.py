@@ -6,26 +6,13 @@ import json
 from src.Alert import  send_email, send_alert
 from src.Sentiment_model import Sentiment_provider, Suggestion_provider, model, get_gemini_response
 from src.Recommendation import Recommendation
+from src.Profile import DataBaseManager
 
+import random
 from dotenv import load_dotenv
 load_dotenv()
 
 
-# st.markdown("""
-#     <style>
-#     .main {
-#         padding: 2rem;
-#     }
-#     .stTitle {
-#         color: #2c3e50;
-#         padding-bottom: 2rem;
-#     }
-#     .stSelectbox > label {
-#         font-size: 1.2rem;
-#         color: #34495e;
-#     }
-#     </style>
-#     """, unsafe_allow_html=True)
 
 st.set_page_config(
     page_title="Staff Alerting System",
@@ -181,6 +168,19 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+activities = {
+        'amenities': ['pool', 'spa', 'gym', 'tennis_court', 'business_center'],
+        'dining': ['main_restaurant', 'cafe', 'bar', 'room_service', 'buffet'],
+        'activities': ['city_tour', 'beach_activity', 'cooking_class', 'yoga', 'golf']
+}
+
+values = list([ i.replace("_"," ").title() for i  in [j for i in activities.values() for j in i]])
+
+database = DataBaseManager()
+llm = model()
+recommendations = Recommendation()
+
+
 st.title("Staff Alerting System")
 
 user_id = st.text_input(
@@ -188,6 +188,8 @@ user_id = st.text_input(
     placeholder="Enter user identification number",
     help="Unique identifier for the user providing feedback"
 )
+
+
 text = st.text_area(
     "Feedback Details", 
     placeholder="Please share your experience with us in detail...",
@@ -200,8 +202,41 @@ User has given given the following feedback, Feedback = {text}.\n Plese provide 
 Start as 'Dear Guest, Thank you for your feedback...' and also include ' will use them to improve our services and address the issues you raised.'
 Keep it simple and short, like 3 to 4 sentences."""
 
-sub = st.button("Submit")
-llm = model()
+_,col,x = st.columns(3)
+with col:
+    container = st.container()
+    with container.expander("Please prvide rating for the activities you have visited"):
+        st.write("Please select the activity you have visited ")
+        selection = st.selectbox(
+            "Select the file to be processed:",
+            options=values,
+            # format_func=lambda x: options[x],
+            index=None,
+            label_visibility='collapsed' 
+        )
+
+        if selection is not None:
+
+            selection = selection.replace(" ", "_").lower()
+            choosed = [ i for i in activities.keys() if selection in activities[i] ]
+
+            rating = st.slider("Rate the activity (0-5):", 0, 5, 3)
+            time_spent = random.randint(30, 180)  # Random time spent between
+            if st.button("Done"):
+                if database.add_interaction(
+                    user_id=user_id, 
+                    category=choosed[0], 
+                    preference=selection, 
+                    rating=rating, 
+                    time_spent=time_spent
+                    ):
+                    st.success("Thank you for the response✨!")
+                    st.empty()
+                    
+                else:
+                    st.error("Something went wrong. Please try again later.")
+if user_id and text:
+    sub = st.button("Submit")
 
 if sub:
     # Response to user feedback
@@ -217,18 +252,23 @@ if sub:
             
     st.markdown("</div>", unsafe_allow_html=True)
     
+   
+
     sender_email = "akashhntest@gmail.com"
     sender_password = os.getenv('SENDER_PASS')
     receiver_email = "akashhn06@gmail.com"
 
     # Generating Recommendation for the user_id
-    recommendations = Recommendation()
     recommendations = recommendations.getRecommendations(user_id, 4)
 
     # improving the recommendation
     prompt = f"""You are a recommendation engine suggest users to visit the given areas of hotel like advertising it.
-Recommend areas: {recommendations}, to user"
-Example: {json.dumps({'Swimming pool': 'You must visit our Swimming Pool, it is the best in the city!'})}
+Recommend areas: {recommendations}.
+
+Example: 
+    Recommend areas= ['Swimming pool']
+    Response:
+    {json.dumps({'Swimming pool': 'You must visit our Swimming Pool, it is the best in the city!'})}
 Return the response in JSON format with the structrue: 
 *  include the ares as keys and recommendation as values."""
     
@@ -243,8 +283,8 @@ Return the response in JSON format with the structrue:
     #         with container.expander(area.replace("_"," ").upper(), expanded=True):
     #             st.write(value)
     st.markdown("<div class='section-header'>🌟 Activites you may also like</div>", unsafe_allow_html=True)
-    container = st.container()
-    for i, (area, value) in enumerate(recommendations.items()):
+
+    for i, area, value in enumerate(recommendations.items()):
         st.markdown(f"""
         <hr style='border: none; border-top: 1px solid #ccc; margin: 1rem 0;'/>
         <h4>{area.replace('_',' ').title()} </h4>
@@ -291,6 +331,8 @@ Return the response in JSON format with the structrue:
     time2 = time.time()
     
     print("Timee taken: ", time2 - time1)
+
+    
 
 # Footer
 st.markdown("---")
