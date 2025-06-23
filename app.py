@@ -251,7 +251,7 @@ if sub:
     
    
 
-    sender_email = "akashhntest@gmail.com"
+    sender_email = "hospitality716@gmail.com"
     sender_password = os.getenv('SENDER_PASS')
     receiver_email = "akashhn06@gmail.com"
 
