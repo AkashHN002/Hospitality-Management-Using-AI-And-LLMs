@@ -4,5 +4,4 @@ seaborn
 numpy
 streamlit 
 mysqlclient
-
 google-generativeai==0.8.4
