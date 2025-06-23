@@ -17,56 +17,84 @@ activities = {
         'activities': ['city_tour', 'beach_activity', 'cooking_class', 'yoga', 'golf']
 }
 
-st.title("Profile Management")
-user_id = st.text_input("Enter user Id ")
-submit = st.button('Submit')
-exist = cursor.execute("SELECT * FROM interaction WHERE User_id = %s", (user_id,))
-if user_id:
-    if exist:
-        st.write(' '.join([f"{i+1}.{act.upper()}." for i,act in enumerate(activities.keys())]))
 
-        c = st.text_input("Choose the Category visited: ")
-        if c:
-            c = int(c)
-            cat = list(activities.keys())[c-1]
-            st.write(''.join([f"{i+1}.{activities[cat][i]}." for i in  range(len(activities[cat]))]))
-            
-            n = st.text_input(f"""Choose any Preferances:  """)
-            if n:
-                n = int(n)
-                pref = activities[cat][n-1]
-                rating = st.text_input("Privide the rating for activity (0-5): ")
-                time_spent = random.randint(30, 180)
-                if rating:
-                    rating = int(rating)
-                    time1 = time.time()
-                    cursor.execute("INSERT INTO interaction VALUES(%s, %s, %s, %s, %s)", (user_id, cat, pref, rating, time_spent))
-                    if cursor.rowcount:
-                        db.commit()
-                        time2 = time.time()
-                        st.write("Data Updated")
-                        st.write(f"Choosed Category {cat}")
-                        st.write(f"Choosed Activity {pref}")
-                        print("Time taken: ",time2 - time1)
+if __name__ == '__main__':
+    st.title("Profile Management")
+    user_id = st.text_input("Enter user Id ")
+    submit = st.button('Submit')
+    exist = cursor.execute("SELECT * FROM interaction WHERE User_id = %s", (user_id,))
+    if user_id:
+        if exist:
+            st.write(' '.join([f"{i+1}.{act.upper()}." for i,act in enumerate(activities.keys())]))
 
-    else:
-        st.write("Data Not Found\nPlease give the following details: ")
-        st.write(' '.join([f"{i+1}.{act.upper()}." for i,act in enumerate(activities.keys())]))
-        c = st.text_input("Choose the Category visited: ")
-        if c:
-            c = int(c)
-            cat = list(activities.keys())[c-1]
-            st.write('\t'.join([f"{i+1}. {activities[cat][i]}. " for i in  range(len(activities[cat]))]))
-            
-            n = st.text_input(f"""Choose any Preferances:  """)
-            if n:
-                n = int(n)
-                pref = activities[cat][n-1]
-                rating = st.text_input("Privide the rating for activity (0-5): ")
-                time_spent = random.randint(30, 180)
-                if rating:
-                    rating = int(rating)
-                    cursor.execute("INSERT INTO interaction VALUES(%s, %s, %s, %s, %s)", (user_id, cat, pref, rating, time_spent))
-                    if cursor.rowcount:
-                        db.commit()
-                        st.write("Data Stored")
+            c = st.text_input("Choose the Category visited: ")
+            if c:
+                c = int(c)
+                cat = list(activities.keys())[c-1]
+                st.write(''.join([f"{i+1}.{activities[cat][i]}." for i in  range(len(activities[cat]))]))
+                
+                n = st.text_input(f"""Choose any Preferances:  """)
+                if n:
+                    n = int(n)
+                    pref = activities[cat][n-1]
+                    rating = st.text_input("Privide the rating for activity (0-5): ")
+                    time_spent = random.randint(30, 180)
+                    if rating:
+                        rating = int(rating)
+                        time1 = time.time()
+                        cursor.execute("INSERT INTO interaction VALUES(%s, %s, %s, %s, %s)", (user_id, cat, pref, rating, time_spent))
+                        if cursor.rowcount:
+                            db.commit()
+                            time2 = time.time()
+                            st.write("Data Updated")
+                            st.write(f"Choosed Category {cat}")
+                            st.write(f"Choosed Activity {pref}")
+                            print("Time taken: ",time2 - time1)
+
+        else:
+            st.write("Data Not Found\nPlease give the following details: ")
+            st.write(' '.join([f"{i+1}.{act.upper()}." for i,act in enumerate(activities.keys())]))
+            c = st.text_input("Choose the Category visited: ")
+            if c:
+                c = int(c)
+                cat = list(activities.keys())[c-1]
+                st.write('\t'.join([f"{i+1}. {activities[cat][i]}. " for i in  range(len(activities[cat]))]))
+                
+                n = st.text_input(f"""Choose any Preferances:  """)
+                if n:
+                    n = int(n)
+                    pref = activities[cat][n-1]
+                    rating = st.text_input("Privide the rating for activity (0-5): ")
+                    time_spent = random.randint(30, 180)
+                    if rating:
+                        rating = int(rating)
+                        cursor.execute("INSERT INTO interaction VALUES(%s, %s, %s, %s, %s)", (user_id, cat, pref, rating, time_spent))
+                        if cursor.rowcount:
+                            db.commit()
+                            st.write("Data Stored")
+
+
+
+class DataBaseManager:
+    def __init__(self,*, host = 'localhost',user = 'root', database = 'mydemo'):
+        self.db = MySQLdb.connect(
+            host = host,
+            user = user,
+            database = database      
+        )
+
+        self.cursor = self.db.cursor()
+        
+
+    def add_interaction(self,*,user_id, category, preference, rating, time_spent):
+        self.cursor.execute("INSERT INTO interaction VALUES(%s, %s, %s, %s, %s)", (user_id, category, preference, rating, time_spent))
+        
+        try:
+            if self.cursor.rowcount:
+                self.db.commit()
+                return True
+            else:
+                raise False
+
+        except Exception as e:
+            raise RuntimeError(f"Data not inserted successfully: {e}")
