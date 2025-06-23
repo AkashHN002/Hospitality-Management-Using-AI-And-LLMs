@@ -30,7 +30,7 @@ Return the response in JSON format with the structrue:
 *  include key `Sentiment` with value as 'Positive' or 'Negative'.
 *  include key `Areas` with value as a list of departments/areas mentioned in the text."""
     response = get_gemini_response(llm, prompt)
-    print(response)
+
 
     return json.loads(response.split('```')[-2].replace('json',""))
 

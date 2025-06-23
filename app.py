@@ -17,7 +17,6 @@ load_dotenv()
 st.set_page_config(
     page_title="Staff Alerting System",
     page_icon="🏨",
-    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
@@ -181,7 +180,7 @@ llm = model()
 recommendations = Recommendation()
 
 
-st.title("Staff Alerting System")
+st.title("🛎️Staff Alerting System")
 
 user_id = st.text_input(
     "User ID", 
@@ -202,46 +201,44 @@ User has given given the following feedback, Feedback = {text}.\n Plese provide 
 Start as 'Dear Guest, Thank you for your feedback...' and also include ' will use them to improve our services and address the issues you raised.'
 Keep it simple and short, like 3 to 4 sentences."""
 
-_,col,x = st.columns(3)
-with col:
-    container = st.container()
-    with container.expander("Please prvide rating for the activities you have visited"):
-        st.write("Please select the activity you have visited ")
-        selection = st.selectbox(
-            "Select the file to be processed:",
-            options=values,
-            # format_func=lambda x: options[x],
-            index=None,
-            label_visibility='collapsed' 
-        )
 
-        if selection is not None:
+container = st.container()
+with container.expander("Please prvide rating for the activities you have visited"):
+    st.write("Please select the activity you have visited ")
+    selection = st.selectbox(
+        "Select the file to be processed:",
+        options=values,
+        # format_func=lambda x: options[x],
+        index=None,
+        label_visibility='collapsed' 
+    )
 
-            selection = selection.replace(" ", "_").lower()
-            choosed = [ i for i in activities.keys() if selection in activities[i] ]
+    if selection is not None:
 
-            rating = st.slider("Rate the activity (0-5):", 0, 5, 3)
-            time_spent = random.randint(30, 180)  # Random time spent between
-            if st.button("Done"):
-                if database.add_interaction(
-                    user_id=user_id, 
-                    category=choosed[0], 
-                    preference=selection, 
-                    rating=rating, 
-                    time_spent=time_spent
-                    ):
-                    st.success("Thank you for the response✨!")
-                    st.empty()
-                    
-                else:
-                    st.error("Something went wrong. Please try again later.")
-if user_id and text:
-    sub = st.button("Submit")
+        selection = selection.replace(" ", "_").lower()
+        choosed = [ i for i in activities.keys() if selection in activities[i] ]
+
+        rating = st.slider("Rate the activity (0-5):", 0, 5, 3)
+        time_spent = random.randint(30, 180)  # Random time spent between
+        if st.button("Done"):
+            if database.add_interaction(
+                user_id=user_id, 
+                category=choosed[0], 
+                preference=selection, 
+                rating=rating, 
+                time_spent=time_spent
+                ):
+                st.success("Thank you for the response✨!")
+                st.empty()
+                
+            else:
+                st.error("Something went wrong. Please try again later.")
+sub = st.button("Submit")
 
 if sub:
     # Response to user feedback
     response = get_gemini_response(llm, response_prompt)
-    print(response_prompt)
+
 
     st.markdown("<div class='section-header'>💬 Management Response</div>", unsafe_allow_html=True)
     st.markdown(f"""
@@ -273,10 +270,10 @@ Return the response in JSON format with the structrue:
 *  include the Areas as keys and recommendation as values."""
     
     rec_response = get_gemini_response(llm, prompt)
+    print("Recommendations: ", recommendations)
 
     # Providing recommendation
     recommendations = json.loads(rec_response.split('```')[-2].replace("json",""))
-
     # container = st.container()
     # if len(recommendations) > 0:
     #     for area, value in recommendations.items():
@@ -284,7 +281,7 @@ Return the response in JSON format with the structrue:
     #             st.write(value)
     st.markdown("<div class='section-header'>🌟 Activites you may also like</div>", unsafe_allow_html=True)
 
-    for i, area, value in enumerate(recommendations.items()):
+    for i,( area, value )in enumerate(recommendations.items()):
         st.markdown(f"""
         <hr style='border: none; border-top: 1px solid #ccc; margin: 1rem 0;'/>
         <h4>{area.replace('_',' ').title()} </h4>

@@ -15,7 +15,7 @@ class Recommendation:
         
         user_data = matrix[matrix.index == user_id]
         other_user = matrix[matrix.index != user_id]
-        print(user_data.shape, other_user.shape)
+
 
         if user_data.shape[0]<1 or other_user.shape[0]<1:
             return []
