@@ -254,23 +254,23 @@ if sub:
     
    
 
-    sender_email = "akashhntest@gmail.com"
+    sender_email = "hospitality716@gmail.com"
     sender_password = os.getenv('SENDER_PASS')
-    receiver_email = "hospitality716@gmail.com"
+    receiver_email = "akashhntest@gmail.com"
 
     # Generating Recommendation for the user_id
     recommendations = recommendations.getRecommendations(user_id, 4)
 
     # improving the recommendation
-    prompt = f"""You are a recommendation engine suggest users to visit the given areas of hotel like advertising it.
-Recommend areas: {recommendations}.
+    prompt = f"""You are a recommendation engine. suggest users to visit the given areas of hotel like advertising it.
+Areas: {recommendations}.
 
 Example: 
-    Recommend areas= ['Swimming pool']
+    Areas= ['Swimming pool']
     Response:
     {json.dumps({'Swimming pool': 'You must visit our Swimming Pool, it is the best in the city!'})}
 Return the response in JSON format with the structrue: 
-*  include the ares as keys and recommendation as values."""
+*  include the Areas as keys and recommendation as values."""
     
     rec_response = get_gemini_response(llm, prompt)
 
@@ -304,7 +304,6 @@ Return the response in JSON format with the structrue:
     if sentiment_data['Sentiment'] == "Negative":
         # Getting suggestion for the areas by the help of feedback
         suggestions = Suggestion_provider(sentiment_data, text)
-
         
         formatted_data = "\n".join([f"*{key.upper()}*: {value}" for key, value in suggestions.items()])
     # Preparing the mail for alert
@@ -333,7 +332,6 @@ Return the response in JSON format with the structrue:
     print("Timee taken: ", time2 - time1)
 
     
-
 # Footer
 st.markdown("---")
 st.markdown("""
@@ -342,5 +340,4 @@ st.markdown("""
     <p style='font-size: 0.9rem;'>Ensuring exceptional service through intelligent feedback analysis</p>
 </div>
 """, unsafe_allow_html=True)
-
 

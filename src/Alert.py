@@ -1,17 +1,13 @@
 import requests
 import json
-import pandas as pd
-from sklearn.metrics.pairwise import cosine_similarity
-import streamlit as st
+
+
 import smtplib
 from email.message import EmailMessage
 import ssl
 import os
 import time
-from src.Sentiment_model import Sentiment_provider, Suggestion_provider
-from src.Recommendation import Recommendation
-from dotenv import load_dotenv
-import google.generativeai as genai
+
 
 
 Webhook_URL = os.getenv("WEBHOOK")
