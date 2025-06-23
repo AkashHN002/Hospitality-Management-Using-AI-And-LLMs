@@ -256,7 +256,7 @@ if sub:
 
     sender_email = "akashhntest@gmail.com"
     sender_password = os.getenv('SENDER_PASS')
-    receiver_email = "akashhn06@gmail.com"
+    receiver_email = "hospitality716@gmail.com"
 
     # Generating Recommendation for the user_id
     recommendations = recommendations.getRecommendations(user_id, 4)

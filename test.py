@@ -1,6 +1,6 @@
 import streamlit as st
 import random 
-from src.Profile import DataBaseManager
+# from src.Profile import DataBaseManager
 
 activities = {
         'amenities': ['pool', 'spa', 'gym', 'tennis_court', 'business_center'],
@@ -10,7 +10,7 @@ activities = {
 
 values = list([ i.replace("_"," ").title() for i  in [j for i in activities.values() for j in i]])
 
-database = DataBaseManager()
+# database = DataBaseManager()
 
 container = st.container()
 with container.expander("Select"):
@@ -30,14 +30,14 @@ with container.expander("Select"):
 
         rating = st.slider("Rate the activity (0-5):", 0, 5, 3)
         time_spent = random.randint(30, 180)  # Random time spent between
-        if st.button("Done"):
-            if database.add_interaction(
-                user_id="1001", 
-                category=choosed[0], 
-                preference=selection, 
-                rating=rating, 
-                time_spent=time_spent
-                ):
-                st.success("Interaction recorded successfully!")
-            else:
-                st.error("Failed to record interaction. Please try again.")
+        # if st.button("Done"):
+        #     if database.add_interaction(
+        #         user_id="1001", 
+        #         category=choosed[0], 
+        #         preference=selection, 
+        #         rating=rating, 
+        #         time_spent=time_spent
+        #         ):
+        #         st.success("Interaction recorded successfully!")
+        #     else:
+        #         st.error("Failed to record interaction. Please try again.")
